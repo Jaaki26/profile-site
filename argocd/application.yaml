@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: profile-site
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your-handle/profile-site-gitops-repo.git
+    targetRevision: main
+    path: deploy/overlays/prod
+    kustomize: {}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: profile
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
